@@ -9,46 +9,41 @@ alfabeto_variaveis = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
 
 nVar = 0
 nRestricoes = 0
-nDelta = [-120,0,240]
+nDelta = []
 
-# DESCOMENTAR!!!
-# nVar = int(input(f"Entre com o numero de variaveis: "))
-# nRestricoes = int(input(f"Entre com o numero de restricoes: "))
-# TEMPORARIO
-nVar = 2
-nRestricoes = 3
+
+# Entrando com numero de variaveis e restricoes
+print("============= Coletando informações de entrada (variáveis e restrições) ===============")
+nVar = int(input(f"Entre com o numero de variaveis: "))
+nRestricoes = int(input(f"Entre com o numero de restricoes: "))
 
 #DEFININDO MINHAS VARIAVEIS DE DECISÃO
 variaveis = alfabeto_variaveis[0:nVar]
 
 #coletando coeficientes das variaveis de decisão
+print("============= Coletando coeficientes das variáveis de decisão ===============")
 coeficientes_var = []
-# DESCOMENTAR!!!
-# formula_z = ""
-# for i in range(0,nVar):
-#     coeficientes_var.append(int(input(f"Entre com o coeficiente de {variaveis[i]}: ")))
-#     formula_z += str(coeficientes_var[i])+str(variaveis[i])
-#     if i != nVar-1:
-#         formula_z += " + "
+formula_z = ""
+for i in range(0,nVar):
+    coeficientes_var.append(int(input(f"Entre com o coeficiente de {variaveis[i]}: ")))
+    formula_z += str(coeficientes_var[i])+str(variaveis[i])
+    if i != nVar-1:
+        formula_z += " + "
 
-# TEMPORARIO
-coeficientes_var = [12,60]
-matriz_dados = (
-    [6,30,2160],
-    [6,45,1320],
-    [6,24,900]
-    )
-
-#mostrando Maximize
-# print(f'Maximize: Z = {formula_z}')
+#coletando coeficientes dos Deltas das restrições
 restricoes = alfabeto_restricoes[0:nRestricoes]
-# print(f"Restricoes: {restricoes}")
+print(f"============= Coletando Deltas das restrições {restricoes} ===============")
+for d in range(0,nRestricoes):
+    nDelta.append(int(input(f"Entre com o delta de {alfabeto_restricoes[d]}: ")))
 
-print("Preenchendo restrições:")
-coeficientes_restricoes = define_coeficientes_restricoes(matriz_dados, nRestricoes, nVar, variaveis)
-print(f'Coeficientes restricoes: {coeficientes_restricoes}')
+#coletando coeficientes das restrições
+print("============= Coletando coeficientes das restrições ===============")
+coeficientes_restricoes, string_restricoes = define_coeficientes_restricoes(nRestricoes, nVar, variaveis, restricoes)
 
-
+print("======= Função de Maximização ========")
+print(f'Maximize: Z = {formula_z}')
+print("============= Sujeito à ===============")
+print(string_restricoes)
 #montando matriz
 # a matriz deve possuir
 matriz_linha = 1 + nRestricoes
@@ -57,57 +52,63 @@ matriz_coluna = nVar + nRestricoes + 1
 #definindo primeira matriz
 matriz = define_matriz_primaria(matriz_linha,matriz_coluna,coeficientes_var,coeficientes_restricoes,variaveis,nVar)
 
+print("============= Matriz Primária ===============")
 print(matriz)
 
-#MAIN_LOOP
 continuar = True
 valores_otimos = {}
-#definindo nova matriz
+#definindo novas matrizes
+print("============= Matrizes Secundárias ===============")
+indice_matriz = 1
 while continuar:
+    # define culuna pivo e linha de referencia
     coluna_pivo = define_coluna_pivo(matriz, matriz_linha, matriz_coluna)
     linha_referencia = define_linha_referencia(matriz, matriz_linha, matriz_coluna, coluna_pivo)
 
+    # define linhas dos valores ótimos
     if(len(valores_otimos) < nVar):
         valores_otimos[variaveis[coluna_pivo]] = linha_referencia
 
+    #definindo nova matriz zerada
     nova_matriz = np.zeros((matriz_linha,matriz_coluna),dtype='float')
+
     #calculando linha de referencia
     for j in range(0,matriz_coluna):
         nova_matriz[linha_referencia][j] = matriz[linha_referencia][j]/matriz[linha_referencia][coluna_pivo]
+
     #calculando restante da nova matriz
     for i in range(0,matriz_linha):
         if i != linha_referencia:
             for j in range(0,matriz_coluna):
                 nova_matriz[i][j] = matriz[i][j] + (matriz[i][coluna_pivo]*-1)*nova_matriz[linha_referencia][j]
     matriz = nova_matriz
-
+    #verificando as condições de parada
     continuar = False
     for sk in range(0,matriz_coluna):
         if matriz[0][sk] < 0:
             continuar = True
+    #mostrando matriz
+    print(f"Matriz {indice_matriz}: ")
+    indice_matriz += 1
     print(matriz)
 
-'''
-- Valores ótimos 
-- Lucro Ótimo
-- Preço Sombra
-- Se Delta >> viável? caso sim: Novo lucro
-'''
 
+#valores ótimos
+print("============= Valores Ótimos ===============")
 for k, v in valores_otimos.items():
     valores_otimos[k] = matriz[v][matriz_coluna-1]
-
 valores_otimos['Z'] = matriz[0][matriz_coluna-1]
-
-print("Valores Ótimos: ", sorted(valores_otimos.items()))
+for k, v in valores_otimos.items():
+    print(f'Valor ótimo de {k} = {v}')
 
 # preço sombra
+print("============= Preço sombra ===============")
 for s in range(nVar,matriz_coluna-1):
     print(f'Preço sombra da restrição {restricoes[s-nVar]} = {matriz[0][s]}')
 
-
 valido = True
 #valida deltas
+print("============= Calculando Delta ===============")
 for x, d in enumerate(restricoes):
     print(f'Delta {restricoes[x]} = {nDelta[x]}')
     linha = x+1
@@ -117,13 +118,13 @@ for x, d in enumerate(restricoes):
         soma += nDelta[indice_delta]*matriz[linha][coluna]
         indice_delta += 1
     soma += matriz[linha][matriz_coluna-1]
-    print(soma)
     if soma > 0:
-        print(f'restrição {restricoes[x]} valida')
+        print(f'restrição {restricoes[x]} -- Valida')
     else:
+        print(f'restrição {restricoes[x]} -- Não valida')
         valido = False
 
-#novo lucro ótimo
+#novo lucro ótimo se delta valido
 if valido:
     linha = 0
     indice_delta = 0
@@ -131,4 +132,6 @@ if valido:
     for coluna in range(nVar,matriz_coluna-1):
         soma += nDelta[indice_delta]*matriz[linha][coluna]
         indice_delta += 1
-print(f'Novo lucro ótimo = {soma}')
+    print(f'Novo lucro ótimo = {soma}')
+else:
+    print(f'Não é viável alterar as disponibilidades das restrições!')

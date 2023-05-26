@@ -1,18 +1,29 @@
 import numpy as np
 
-def define_coeficientes_restricoes(matriz_dados,nRestricoes,nVar,variaveis):
+def define_coeficientes_restricoes(nRestricoes,nVar,variaveis,restricoes):
     coeficientes_restricoes = []
     for i in range(0,nRestricoes):
-        # print(f'Restricao {restricoes[i]}:')
+        print(f'Entrar com as restrições de {restricoes[i]}:')
         restri_dict = {}
         for j in range(0,nVar):
-            restri_dict[variaveis[j]] = matriz_dados[i][j]
-            # restri_dict[variaveis[j]] = int(input(f"Entre com o valor do coeficiente de {variaveis[j]}: "))
+            restri_dict[variaveis[j]] = float(input(f"Entre com o valor do coeficiente de {variaveis[j]}: "))
         #entrando com lado direito da restrição
-        # restri_dict["LD"] = int(input(f"Entre com o valor do lado direito: "))
-        restri_dict["LD"] = matriz_dados[i][nVar]
+        restri_dict["LD"] = float(input(f"Entre com o valor do lado direito: "))
         coeficientes_restricoes.append(restri_dict)
-    return coeficientes_restricoes
+    
+    string_restricoes = ''
+    #definindo string de restricoes
+    for i, item in enumerate(coeficientes_restricoes):
+        for k, v in item.items():
+            if k != 'LD': 
+                string_restricoes += f'{v}{k} '
+                if list(item.items())[-2][0] != k:
+                    string_restricoes += '+ '
+            else:
+                string_restricoes += f'<= {v} [{restricoes[i]}] \n'  
+    
+    #mostrando SA
+    return coeficientes_restricoes, string_restricoes
 
 def define_matriz_primaria(matriz_linha,matriz_coluna,coeficientes_var,coeficientes_restricoes,variaveis,nVar):
     matriz = np.zeros((matriz_linha,matriz_coluna),dtype='float')
