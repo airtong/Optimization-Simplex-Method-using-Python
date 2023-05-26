@@ -1,6 +1,5 @@
 # Optimization-Simplex-Method-using-Python
 
-
 A aplicação deve receber como entrada:
 
 - No de Variáveis de decisão -> 
@@ -10,15 +9,9 @@ A aplicação deve receber como entrada:
 - Delta1, Delta2, Delta3...Deltan
 
 
-
 A aplicação deve apresentar como saída
 
 - Valores ótimos
 - Lucro Ótimo
 - Preço Sombra
 - Se Delta >> viável? caso sim: Novo lucro
-
-
-
-#libs
-- pyrich
