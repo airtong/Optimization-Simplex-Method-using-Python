@@ -1,4 +1,4 @@
-<h1 align='center'>Optimization-Simplex-Method-using-Python</h1>
+<h1 align='center'>Optimization Simplex Method using Python 🐍</h1>
 <p align="left">Repositírio destinado ao trabalho de otimização por método simple utilizando Python.</p>
 
 <div align="center">
@@ -12,7 +12,7 @@
 <h3> VS Code</h3>
 🚨
 
-- Rodar a aplicação em python com o comando abaixo:
+- Rodar a aplicação na IDE utilizada com o run nativo ou com o comando abaixo:
 
 ```
 python Simplex.py
@@ -20,10 +20,10 @@ python Simplex.py
 
 > A aplicação deve receber como entrada: 📥🚀
 
-- Número de Variáveis de decisão, quantos serão os parâmetros analisados;
-- Número de restrições, quantas formas serão analisadas para se ajustar o melhor resultado esperado;
+- Número de variáveis de decisão. Quantidade de parâmetros analisados;
+- Número de restrições. Quantas formas serão analisadas para se ajustar o melhor resultado esperado;
 - Coeficientes das variáveis da decisão --> Z no formato: Ax1 + Bx2 + Cx3, deve-se entrar com as variáveis A, B e C;
-- Coeficientes das restrições --> Entrar com M, N e O, de cada restrição;
+- Coeficientes das restrições --> Entrar com M, N e O, de cada restrição e Lado Direito (LD);
 - Deve-se verificar se o cálculo do Delta será feito e aceito (s/n) na entrada;
 - Caso o Delta for calculado, informar o Delta de cada uma das restições;🥏
 
@@ -40,4 +40,4 @@ python Simplex.py
 
 ## Lib utilizada no projeto 🕋 🗳️
 
-- pandas 🐼
+- numpy
