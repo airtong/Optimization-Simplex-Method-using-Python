@@ -30,14 +30,10 @@ for i in range(0,nVar):
     if i != nVar-1:
         formula_z += " + "
 
-#coletando coeficientes dos Deltas das restrições
-restricoes = alfabeto_restricoes[0:nRestricoes]
-print(f"============= Coletando Deltas das restrições {restricoes} ===============")
-for d in range(0,nRestricoes):
-    nDelta.append(int(input(f"Entre com o delta de {alfabeto_restricoes[d]}: ")))
 
 #coletando coeficientes das restrições
-print("============= Coletando coeficientes das restrições ===============")
+restricoes = alfabeto_restricoes[0:nRestricoes]
+print(f"============= Coletando coeficientes das restrições {restricoes} ===============")
 coeficientes_restricoes, string_restricoes = define_coeficientes_restricoes(nRestricoes, nVar, variaveis, restricoes)
 
 print("======= Função de Maximização ========")
@@ -98,40 +94,60 @@ print("============= Valores Ótimos ===============")
 for k, v in valores_otimos.items():
     valores_otimos[k] = matriz[v][matriz_coluna-1]
 valores_otimos['Z'] = matriz[0][matriz_coluna-1]
-for k, v in valores_otimos.items():
-    print(f'Valor ótimo de {k} = {v}')
+for k, v in sorted(valores_otimos.items()):
+    if k != 'Z':
+        print(f'Valor ótimo de {k} = {v}')
+    else:
+        print(f'Lucro ótimo [Z] = {v}')
 
 # preço sombra
 print("============= Preço sombra ===============")
 for s in range(nVar,matriz_coluna-1):
     print(f'Preço sombra da restrição {restricoes[s-nVar]} = {matriz[0][s]}')
 
-valido = True
-#valida deltas
-print("============= Calculando Delta ===============")
-for x, d in enumerate(restricoes):
-    print(f'Delta {restricoes[x]} = {nDelta[x]}')
-    linha = x+1
-    soma = 0
-    indice_delta = 0
-    for coluna in range(nVar,matriz_coluna-1):
-        soma += nDelta[indice_delta]*matriz[linha][coluna]
-        indice_delta += 1
-    soma += matriz[linha][matriz_coluna-1]
-    if soma > 0:
-        print(f'restrição {restricoes[x]} -- Valida')
-    else:
-        print(f'restrição {restricoes[x]} -- Não valida')
-        valido = False
 
-#novo lucro ótimo se delta valido
-if valido:
-    linha = 0
-    indice_delta = 0
-    soma = valores_otimos['Z']
-    for coluna in range(nVar,matriz_coluna-1):
-        soma += nDelta[indice_delta]*matriz[linha][coluna]
-        indice_delta += 1
-    print(f'Novo lucro ótimo = {soma}')
+#coletando coeficientes dos Deltas das restrições: Calcular delta?
+print("============= Verificando Delta para restrições ===============")
+calcular = str(input("Deseja calcular o delta? (s/n): ")).lower()
+
+if calcular == "s":
+    print(f"============= Coletando Deltas das restrições {restricoes} ===============")
+    for d in range(0,nRestricoes):
+        nDelta.append(int(input(f"Entre com o delta de {alfabeto_restricoes[d]}: ")))
+
+    valido = True
+    #valida deltas
+    print("============= Calculando Delta ===============")
+    for x, d in enumerate(restricoes):
+        print(f'Delta linha {x+1}...')
+        linha = x+1
+        soma = 0
+        indice_delta = 0
+        for coluna in range(nVar,matriz_coluna-1):
+            soma += nDelta[indice_delta]*matriz[linha][coluna]
+            indice_delta += 1
+        soma += matriz[linha][matriz_coluna-1]
+        if soma <= 0:
+            print(f'Resultado = {soma} --> Não Valido!')
+            valido = False
+        else:
+            print(f'Resultado = {soma} --> Valido!')
+        #     print(f'restrição {restricoes[x]} -- Valida')
+        # else:
+        #     print(f'restrição {restricoes[x]} -- Não valida')
+        #     valido = False
+
+    #novo lucro ótimo se delta valido
+    if valido:
+        print(f'Daltas validados! Calculando novo lucro ótimo...')
+        linha = 0
+        indice_delta = 0
+        soma = valores_otimos['Z']
+        for coluna in range(nVar,matriz_coluna-1):
+            soma += nDelta[indice_delta]*matriz[linha][coluna]
+            indice_delta += 1
+        print(f'Novo lucro ótimo [Z] = {soma}')
+    else:
+        print(f'Não é viável alterar as disponibilidades das restrições!')
 else:
-    print(f'Não é viável alterar as disponibilidades das restrições!')
+    print(f'Calculo de delta não necessário. Programa finalizado!')
