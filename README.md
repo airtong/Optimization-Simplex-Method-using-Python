@@ -21,7 +21,7 @@ python Simplex.py
 > A aplicação deve receber como entrada: 📥🚀
 
 - Número de Variáveis de decisão, quantos serão os parâmetros analisados;
-- Número de restrições, quantas formas serão analisadas para se ajusatar o melhor resultado esperado;
+- Número de restrições, quantas formas serão analisadas para se ajustar o melhor resultado esperado;
 - Coeficientes das variáveis da decisão --> Z no formato: Ax1 + Bx2 + Cx3, deve-se entrar com as variáveis A, B e C;
 - Coeficientes das restrições --> Entrar com M, N e O, de cada restrição;
 - Deve-se verificar se o cálculo do Delta será feito e aceito (s/n) na entrada;
@@ -29,7 +29,7 @@ python Simplex.py
 
 > A aplicação calculará e informará a saída:📤 🎯
 
-- A função de Maximização (Z): Z = Ax + By, por exemplo;
+- A função de Maximização (Z): Z = Ax1 + Bx2, por exemplo;
 - As funções de restrições em sua forma de função;
 - Matriz primária;
 - Matrizes secundárias. Caso exista mais de uma, enumeradas;
@@ -40,4 +40,4 @@ python Simplex.py
 
 ## Lib utilizada no projeto 🕋 🗳️
 
-- pandas
+- pandas 🐼
