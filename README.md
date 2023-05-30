@@ -41,10 +41,10 @@ Entre com o coeficiente de B: 7
 # Resultando em:
 Maximize: Z = 5A + 7B
 ```
-#### O programa atribui automaticamente letras as variaveis de decisão, no exemplo A, B e C.
+#### O programa atribui automaticamente letras as variaveis de decisão, no exemplo A e B.
 
 #
-> Coeficientes das restrições --> No formado Ax1 + Bx2 + Cx3 <= LD, deve-se entrar com A,B,C e LD ;
+> Coeficientes das restrições --> No formado Ax1 + Bx2 <= LD, deve-se entrar com A,B e LD ;
 ```
 ============= Coletando coeficientes das restrições ['M', 'N', 'O'] ===============
 Entrar com as restrições de M:
