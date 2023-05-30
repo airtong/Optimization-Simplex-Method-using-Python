@@ -10,9 +10,12 @@
 # 📜 Passo a passo
 
 <h3> VS Code</h3>
-🚨
+🚨 Para instalar a biblioteca necessária, rode o seguinte comando:
 
-- Rodar a aplicação na IDE utilizada com o run nativo ou com o comando abaixo:
+```
+pip install numpy
+```
+🚨 Rodar a aplicação na IDE utilizada com o run nativo ou com o comando abaixo:
 
 ```
 python Simplex.py
