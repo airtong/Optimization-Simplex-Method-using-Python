@@ -1,5 +1,5 @@
 <h1 align='center'>Optimization Simplex Method using Python 🐍</h1>
-<p align="left">Repositírio destinado ao trabalho de otimização por método simple utilizando Python.</p>
+<p align="left">Repositório destinado ao trabalho de otimização por método simple utilizando Python.</p>
 
 <div align="center">
 
