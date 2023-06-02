@@ -62,8 +62,11 @@ while continuar:
     linha_referencia = define_linha_referencia(matriz, matriz_linha, matriz_coluna, coluna_pivo)
 
     # define linhas dos valores ótimos
-    if(len(valores_otimos) < nVar):
-        valores_otimos[variaveis[coluna_pivo]] = linha_referencia
+    for k, v in valores_otimos.items():
+        if v == linha_referencia:
+            valores_otimos.pop(k)
+            break
+    valores_otimos[variaveis[coluna_pivo]] = linha_referencia
 
     #definindo nova matriz zerada
     nova_matriz = np.zeros((matriz_linha,matriz_coluna),dtype='float')
@@ -99,6 +102,7 @@ for k, v in sorted(valores_otimos.items()):
         print(f'Valor ótimo de {k} = {v}')
     else:
         print(f'Lucro ótimo [Z] = {v}')
+        lucro_primario = v
 
 # preço sombra
 print("============= Preço sombra ===============")
@@ -132,10 +136,6 @@ if calcular == "s":
             valido = False
         else:
             print(f'Resultado = {soma} --> Valido!')
-        #     print(f'restrição {restricoes[x]} -- Valida')
-        # else:
-        #     print(f'restrição {restricoes[x]} -- Não valida')
-        #     valido = False
 
     #novo lucro ótimo se delta valido
     if valido:
@@ -147,6 +147,7 @@ if calcular == "s":
             soma += nDelta[indice_delta]*matriz[linha][coluna]
             indice_delta += 1
         print(f'Novo lucro ótimo [Z] = {soma}')
+        print(f'O lucro subiu {soma-lucro_primario}')
     else:
         print(f'Não é viável alterar as disponibilidades das restrições!')
 else:
