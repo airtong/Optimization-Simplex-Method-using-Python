@@ -66,7 +66,8 @@ while continuar:
         if v == linha_referencia:
             valores_otimos.pop(k)
             break
-    valores_otimos[variaveis[coluna_pivo]] = linha_referencia
+    if(len(valores_otimos) < nVar):
+        valores_otimos[variaveis[coluna_pivo]] = linha_referencia
 
     #definindo nova matriz zerada
     nova_matriz = np.zeros((matriz_linha,matriz_coluna),dtype='float')
